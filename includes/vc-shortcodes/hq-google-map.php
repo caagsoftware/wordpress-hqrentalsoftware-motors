@@ -1,8 +1,8 @@
 <?php
 vc_map(array(
-    'name' => esc_html__('Caag Google Map', 'motors'),
-    'base' => 'caag_google_map',
-    'icon' => 'https://rent-scandinavia.caag.nl/wp-content/uploads/2018/01/apple-icon-60x60.png',
+    'name' => esc_html__('HQ Google Map', 'motors'),
+    'base' => 'hq_google_map',
+    'icon' => HQ_MOTORS_VC_SHORTCODES_ICON,
     'params' => array(
         array(
             'type' => 'textfield',
@@ -68,7 +68,7 @@ vc_map(array(
     )
 ));
 
-class WPBakeryShortCode_caag_google_map extends WPBakeryShortCode{
+class WPBakeryShortCode_hq_google_map extends WPBakeryShortCode{
 
     protected function content( $atts, $content = null ) {
         extract( shortcode_atts( array(

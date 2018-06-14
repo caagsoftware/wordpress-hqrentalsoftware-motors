@@ -7,16 +7,16 @@
 
 vc_map(
     array(
-        'name'                    => __( 'Caag Product Grid', 'js_composer' ),
-        'base'                    => 'caag_product_grid',
+        'name'                    => __( 'HQ Vehicles Classes Grid', 'js_composer' ),
+        'base'                    => 'hq_vehicles_classes_grid',
         'content_element'         => true,
         'show_settings_on_create' => true,
-        'description'             => __( 'Caag Product Grid', 'js_composer'),
-        'icon'                    =>    'http://pre-live.hqrentalsoftware.com/wp-content/uploads/2018/01/apple-icon-60x60.png',
+        'description'             => __( 'HQ Vehicles Classes Grid', 'js_composer'),
+        'icon'                    =>    HQ_MOTORS_VC_SHORTCODES_ICON,
         'params' => array(
             array(
                 'type'        => 'textfield',
-                'heading'     => __( 'Number of Products to Show', 'js_composer' ),
+                'heading'     => __( 'Number of Cars to Show', 'js_composer' ),
                 'param_name'  => 'product_number',
                 'value'       => '6'
             ),
@@ -26,16 +26,23 @@ vc_map(
                 'param_name'  => 'currency_tag',
                 'value'       => ''
             ),
+            array(
+                'type'        => 'textfield',
+                'heading'     => __( 'Reservation Page URL', 'js_composer' ),
+                'param_name'  => 'reservation_page_url',
+                'value'       => ''
+            ),
         )
     )
 );
 
-class WPBakeryShortCode_caag_product_grid extends WPBakeryShortCode{
+class WPBakeryShortCode_hq_vehicles_classes_grid extends WPBakeryShortCode{
     protected function content( $atts, $content = null ) {
 
         extract( shortcode_atts( array(
-            'product_number' => '6',
-            'currency_tag'	 =>	''
+            'product_number'            => '6',
+            'currency_tag'	            =>	'',
+            'reservation_page_url'      =>  ''
         ), $atts ) );
 
         if (empty($product_number)) {
@@ -60,6 +67,7 @@ class WPBakeryShortCode_caag_product_grid extends WPBakeryShortCode{
         );
 
         $offices = new WP_Query($args);
+
         if ($offices->have_posts()): ?>
             <div class="vc_row wpb_row vc_inner vc_row-fluid">
                 <div class="stm_products_grid_class">
@@ -69,7 +77,7 @@ class WPBakeryShortCode_caag_product_grid extends WPBakeryShortCode{
                         $car_info = stm_get_car_rent_info($id);
                         $product = new WC_Product($id);
                         $price = $product->get_price();
-                        $link = pll__('Reservation Integration Link');
+                        $link = $reservation_page_url;
                         ?>
                         <div class="stm_product_grid_single">
                             <a href="<?php echo $link; ?>" class="inner">

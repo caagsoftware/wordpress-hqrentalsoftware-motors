@@ -27,13 +27,6 @@
             }
         });
 
-        $(document).on('mouseover', '.stm_rent_location .select2-results__options li', function(){
-            var currentLi = ($(this).index()) - 1;
-            $('.stm_rent_location .stm_locations_description').remove();
-            $('.stm_rent_location').append(contents[currentLi]);
-        });
-
-
         /*Timepicker*/
         var stmToday = new Date();
         var stmTomorrow = new Date(+new Date() + 86400000);
