@@ -114,7 +114,6 @@
         $('#caag-return-date').val(newDate.add(7, 'days').format('YYYY-MM-DD HH:mm'));
     });
     $('.xdsoft_current').css('background-color','#1184bf !important');
-
 })(jQuery);
 
 function checkDate ($start, $end) {
