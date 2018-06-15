@@ -110,8 +110,10 @@
     });
 
     $('#caag-pick-up-date').change(function(){
-        var newDate = moment($('#caag-pick-up-date').val(),'YYYY-MM-DD HH:mm');
-        $('#caag-return-date').val(newDate.add(7, 'days').format('YYYY-MM-DD HH:mm'));
+        if($('#caag-pick-up-date').val() != ""){
+            var newDate = moment($('#caag-pick-up-date').val(),'YYYY-MM-DD HH:mm');
+            $('#caag-return-date').val(newDate.add(7, 'days').format('YYYY-MM-DD HH:mm'));
+        }
     });
     $('.xdsoft_current').css('background-color','#1184bf !important');
 })(jQuery);
