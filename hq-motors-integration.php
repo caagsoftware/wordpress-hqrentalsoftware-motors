@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name:  HQ Rental - Motors Theme Integraion
+Plugin Name:  HQ Rental - Motors Theme Integration
 Plugin URI:   https://hqrentalsoftware.com
 Description:  HQ Rental Software Toolset
 Version:      0.1

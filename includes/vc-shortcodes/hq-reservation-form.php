@@ -82,6 +82,36 @@ vc_map(
                 'value' => '',
                 'description' => esc_html__('Enter the Return Date Placeholder')
             ),
+            ///////////////////////////
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__('Delivery Location Label', 'motors'),
+                'param_name' => 'delivery_location_label',
+                'value' => '',
+                'description' => esc_html__('Enter the Delivery Location Label')
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__('Delivery Location Placeholder', 'motors'),
+                'param_name' => 'delivery_location_placeholder',
+                'value' => '',
+                'description' => esc_html__('Enter the Delivery Location Placeholder')
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__('Collection Location Label', 'motors'),
+                'param_name' => 'collection_location_label',
+                'value' => '',
+                'description' => esc_html__('Enter the Collection Location Label')
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__('Collection Location Placeholder', 'motors'),
+                'param_name' => 'collection_location_placeholder',
+                'value' => '',
+                'description' => esc_html__('Enter the Collection Location Placeholder')
+            ),
+            ///////////////////
             array(
                 'type' => 'textfield',
                 'heading' => esc_html__('Button Text', 'motors'),
@@ -145,19 +175,23 @@ vc_map(
 class WPBakeryShortCode_hq_reservation_form extends WPBakeryShortCode{
     protected function content( $atts, $content = null ) {
         extract( shortcode_atts( array(
-            'pick_up_location_label'	    =>	'',
-            'pick_up_location_placeholder'	=>	'',
-            'pick_up_date_label'	        =>	'',
-            'pick_up_date_placeholder'	    =>	'',
-            'return_date_label'		        =>	'',
-            'return_date_placeholder'	    =>	'',
-            'button_text'                   =>  '',
-            'alignment'                     =>  'text-left',
-            'action_link'	                =>	'',
-            'pickup_locations'              =>  '',
-            'return_locations'              =>  '',
-            'return_location_label'         =>  '',
-            'return_location_placeholder'  =>  ''
+            'pick_up_location_label'	        =>	'',
+            'pick_up_location_placeholder'	    =>	'',
+            'pick_up_date_label'	            =>	'',
+            'pick_up_date_placeholder'	        =>	'',
+            'return_date_label'		            =>	'',
+            'return_date_placeholder'	        =>	'',
+            'button_text'                       =>  '',
+            'alignment'                         =>  'text-left',
+            'action_link'	                    =>	'',
+            'pickup_locations'                  =>  '',
+            'return_locations'                  =>  '',
+            'return_location_label'             =>  '',
+            'return_location_placeholder'       =>  '',
+            'delivery_location_label'           =>  '',
+            'delivery_location_placeholder'     =>  '',
+            'collection_location_label'         =>  '',
+            'collection_location_placeholder'   =>  '',
         ), $atts ) );
         $pickup_locations 	= json_decode( urldecode( $pickup_locations ), true );
         $return_locations 	= json_decode( urldecode( $return_locations ), true );
@@ -169,7 +203,7 @@ class WPBakeryShortCode_hq_reservation_form extends WPBakeryShortCode{
                         <div class="stm_rent_form_fields">
                             <div class="stm_pickup_location">
                                 <i class="stm-service-icon-pin"></i>
-                                <select name="pick_up_location" data-class="stm_rent_location" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
+                                <select id="hq-pick-up-location" name="pick_up_location" data-class="stm_rent_location" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
                                         <option value=""><?php echo $pick_up_location_placeholder; ?></option>
                                     <?php foreach ($pickup_locations as $location): ?>
                                         <option value="<?php echo $location['id']; ?>"><?php echo $location['label']; ?></option>
@@ -177,21 +211,39 @@ class WPBakeryShortCode_hq_reservation_form extends WPBakeryShortCode{
                                 </select>
                             </div>
                         </div>
+                        <div id="hq-delivery-location-wrapper">
+                            <h4 style="margin-top:18px;"><?php echo $delivery_location_label; ?></h4>
+                            <div class="stm_date_time_input">
+                                <div class="stm_date_input">
+                                    <input type="text" value="" class="hq-text-fields" name="pick_up_location_custom" placeholder="<?php echo $delivery_location_placeholder; ?>" >
+                                    <i class="stm-service-icon-pin"></i>
+                                </div>
+                            </div>
+                        </div>
                         <h4 style="margin-top:18px;"><?php echo $return_location_label; ?></h4>
                         <div class="stm_rent_form_fields">
                             <div class="stm_pickup_location">
                                 <i class="stm-service-icon-pin"></i>
-                                <select name="pick_up_location" data-class="stm_rent_location" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
+                                <select id="hq-return-location" name="return_location" data-class="stm_rent_location" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
                                     <option value=""><?php echo $return_location_placeholder; ?></option>
                                     <?php foreach ($return_locations as $location): ?>
                                         <option value="<?php echo $location['id']; ?>"><?php echo $location['label']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+                            <div id="hq-collection-location-wrapper">
+                                <h4 style="margin-top:18px;"><?php echo $collection_location_label; ?></h4>
+                                <div class="stm_date_time_input">
+                                    <div class="stm_date_input">
+                                        <input type="text" value="" class="hq-text-fields" name="return_location_custom" placeholder="<?php echo $collection_location_placeholder; ?>">
+                                        <i class="stm-service-icon-pin"></i>
+                                    </div>
+                                </div>
+                            </div>
                             <h4 style="margin-top:18px;"><?php echo $pick_up_date_label; ?></h4>
                             <div class="stm_date_time_input">
                                 <div class="stm_date_input">
-                                    <input type="text" value="" id="caag-pick-up-date" class="stm-date-timepicker-start active" name="pick_up_date" placeholder="<?php echo $pick_up_date_placeholder; ?>" required="" readonly="">
+                                    <input type="text" id="caag-pick-up-date" class=" active" name="pick_up_date" placeholder="<?php echo $pick_up_date_placeholder; ?>" required="" readonly="">
                                     <i class="stm-icon-date"></i>
                                 </div>
                             </div>
@@ -200,12 +252,11 @@ class WPBakeryShortCode_hq_reservation_form extends WPBakeryShortCode{
                         <div class="stm_rent_form_fields stm_rent_form_fields-drop">
                             <div class="stm_date_time_input">
                                 <div class="stm_date_input">
-                                    <input type="text" id="caag-return-date"  class="stm-date-timepicker-end active" name="return_date" value="" placeholder="<?php echo $return_date_placeholder; ?>" required="" readonly="">
+                                    <input type="text" id="caag-return-date" class=" active" name="return_date" placeholder="<?php echo $return_date_placeholder; ?>" required="" readonly="">
                                     <i class="stm-icon-date"></i>
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="order_old_days" value="1">
                         <button type="submit"><?php echo $button_text; ?><i class="fa fa-arrow-right"></i></button>
                     </form>
                 </div>
@@ -213,6 +264,16 @@ class WPBakeryShortCode_hq_reservation_form extends WPBakeryShortCode{
             <style>
                 .stm-template-car_rental .stm_rent_location .select2-dropdown{
                     min-height: 0px;
+                }
+                #hq-delivery-location-wrapper, #hq-collection-location-wrapper {
+                    display: none;
+                }
+                .hq-text-fields{
+                    padding-left: 37px;
+                    height: 40px;
+                    line-height: 40px;
+                    background-color: #fff;
+                    border: 0;
                 }
             </style>
         <?php
