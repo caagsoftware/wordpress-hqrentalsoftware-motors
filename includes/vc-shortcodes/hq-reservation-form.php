@@ -289,11 +289,7 @@ class WPBakeryShortCode_hq_reservation_form extends WPBakeryShortCode{
                         <div class="stm_rent_form_fields">
                             <div class="stm_pickup_location">
                                 <i class="stm-service-icon-pin"></i>
-<<<<<<< HEAD
                                 <select id="hq-return-location" name="return_location" data-class="stm_rent_location" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
-=======
-                                <select name="return_location" data-class="stm_rent_location" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
->>>>>>> master
                                     <option value=""><?php echo $return_location_placeholder; ?></option>
                                     <?php foreach ($return_locations as $location): ?>
                                         <option value="<?php echo $location['id']; ?>"><?php echo $location['label']; ?></option>
