@@ -82,7 +82,6 @@ vc_map(
                 'value' => '',
                 'description' => esc_html__('Enter the Return Date Placeholder')
             ),
-            ///////////////////////////
             array(
                 'type' => 'textfield',
                 'heading' => esc_html__('Delivery Location Label', 'motors'),
@@ -99,19 +98,18 @@ vc_map(
             ),
             array(
                 'type' => 'textfield',
-                'heading' => esc_html__('Collection Location Label', 'motors'),
+                'heading' => esc_html__('Custom Location Label', 'motors'),
                 'param_name' => 'collection_location_label',
                 'value' => '',
-                'description' => esc_html__('Enter the Collection Location Label')
+                'description' => esc_html__('Enter the Custom Location Label')
             ),
             array(
                 'type' => 'textfield',
-                'heading' => esc_html__('Collection Location Placeholder', 'motors'),
+                'heading' => esc_html__('Custom Location Placeholder', 'motors'),
                 'param_name' => 'collection_location_placeholder',
                 'value' => '',
-                'description' => esc_html__('Enter the Collection Location Placeholder')
+                'description' => esc_html__('Enter the Custom Location Placeholder')
             ),
-            ///////////////////
             array(
                 'type' => 'textfield',
                 'heading' => esc_html__('Button Text', 'motors'),
@@ -167,7 +165,49 @@ vc_map(
                         'value' 	  => ''
                     ),
                 )
-            )
+            ),
+            array(
+                'type' => 'checkbox',
+                'heading' => esc_html__('Support Multiple Brands', 'motors'),
+                'param_name' => 'multiple_brands',
+                'value' => '',
+                'description' => esc_html__('Reservation Page Url')
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__('Brand Selector Label', 'motors'),
+                'param_name' => 'pick_brand_label',
+                'value' => '',
+                'description' => esc_html__('Select Label for Brand Field')
+            ),
+            array(
+                'type' => 'textfield',
+                'heading' => esc_html__('Brand Selector Placeholder', 'motors'),
+                'param_name' => 'pick_brand_placeholder',
+                'value' => '',
+                'description' => esc_html__('Select Placeholder for Brand Field')
+            ),
+            array(
+                'type'       => 'param_group',
+                'heading'    => __( 'Brands Page', 'js_composer' ),
+                'param_name' => 'brands_links',
+                'params'     => array(
+                    array(
+                        'type' 		  => 'textfield',
+                        'heading' 	  => __( 'Brand Name', 'js_composer' ),
+                        'param_name'  => 'name',
+                        'description' => __( 'Brand Name', 'js_composer' ),
+                        'value' 	  => ''
+                    ),
+                    array(
+                        'type' 		  => 'textfield',
+                        'heading' 	  => __( 'Brand Page Link', 'js_composer' ),
+                        'param_name'  => 'link',
+                        'description' => __( 'Add the Page Url from this Brand', 'js_composer' ),
+                        'value' 	  => ''
+                    )
+                )
+            ),
         )
     )
 );
@@ -192,13 +232,38 @@ class WPBakeryShortCode_hq_reservation_form extends WPBakeryShortCode{
             'delivery_location_placeholder'     =>  '',
             'collection_location_label'         =>  '',
             'collection_location_placeholder'   =>  '',
+            'multiple_brands'                   =>  false,
+            'brands_links'                      =>  [],
+            'pick_brand_label'                  =>  '',
+            'pick_brand_placeholder'            =>  ''
         ), $atts ) );
         $pickup_locations 	= json_decode( urldecode( $pickup_locations ), true );
         $return_locations 	= json_decode( urldecode( $return_locations ), true );
+        $brands_links = json_decode( urldecode( $brands_links ), true );
+        if( !empty($multiple_brands) ){
+            $multiple_brands = true;
+        }
         ?>
             <div class="stm_rent_car_form_wrapper caag-book-form-style style_1 <?php echo $alignment; ?>">
                 <div class="stm_rent_car_form">
-                    <form id="caag-book-form" action="<?php echo $action_link; ?>" method="post">
+                    <?php if($multiple_brands): ?>
+                        <form id="caag-book-form" action="<?php echo $brands_links[0]['link']; ?>" method="post">
+                    <?php else: ?>
+                        <form id="caag-book-form" action="<?php echo $action_link; ?>" method="post">
+                    <?php endif; ?>
+                        <?php if($multiple_brands): ?>
+                            <h4><?php echo $pick_brand_label; ?></h4>
+                            <div class="stm_rent_form_fields" style="margin-bottom: 15px;">
+                                <div class="stm_pickup_location">
+                                    <i class="stm-service-icon-pin"></i>
+                                    <select id="hq-pick-brand" name="pick_up_location" data-class="stm_rent_location" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
+                                        <?php foreach ($brands_links as $brand): ?>
+                                        <option value="<?php echo $brand['link']; ?>"><?php echo $brand['name']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                         <h4><?php echo $pick_up_location_label; ?></h4>
                         <div class="stm_rent_form_fields">
                             <div class="stm_pickup_location">

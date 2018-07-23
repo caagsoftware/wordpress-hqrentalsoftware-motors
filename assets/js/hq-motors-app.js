@@ -53,4 +53,8 @@
     });
     $('.xdsoft_current').css('background-color','#1184bf !important');
 
+    $('#hq-pick-brand').on('change', function(){
+        $('#caag-book-form').attr('action', $('#hq-pick-brand').val());
+    });
+
 })(jQuery);
