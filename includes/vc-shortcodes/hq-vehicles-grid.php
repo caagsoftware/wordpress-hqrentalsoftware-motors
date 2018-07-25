@@ -32,6 +32,12 @@ vc_map(
                 'param_name'  => 'reservation_page_url',
                 'value'       => ''
             ),
+            array(
+                'type'        => 'textfield',
+                'heading'     => __( 'Day', 'js_composer' ),
+                'param_name'  => 'day',
+                'value'       => ''
+            ),
         )
     )
 );
@@ -42,42 +48,34 @@ class WPBakeryShortCode_hq_vehicles_classes_grid extends WPBakeryShortCode{
         extract( shortcode_atts( array(
             'product_number'            => '6',
             'currency_tag'	            =>	'',
-            'reservation_page_url'      =>  ''
+            'reservation_page_url'      =>  '',
+            'day'                       =>  ''
         ), $atts ) );
 
         if (empty($product_number)) {
             $product_number = 6;
         }
-
         $args = array(
             'post_type' => 'product',
-            'posts_per_page' => intval($product_number),
+            'posts_per_page' => -1,
             'post_status' => 'publish',
             'orderby'   => 'meta_value_num',
             'meta_key'  => '_price',
-            'order' => 'ASC',
-            'tax_query' => array(
-                array(
-                    'taxonomy' => 'product_type',
-                    'field' => 'slug',
-                    'terms' => 'car_option',
-                    'operator' => 'NOT IN'
-                )
-            )
+            'order' => 'ASC'
         );
-
-        $offices = new WP_Query($args);
-
-        if ($offices->have_posts()): ?>
+        $vehicles = new WP_Query($args);
+        if ($vehicles->have_posts()): ?>
             <div class="vc_row wpb_row vc_inner vc_row-fluid">
                 <div class="stm_products_grid_class">
-                    <?php while ($offices->have_posts()): $offices->the_post();
+                    <?php while ($vehicles->have_posts()): $vehicles->the_post();
                         $id = get_the_ID();
                         $s_title = get_post_meta($id, 'cars_info', true);
                         $car_info = stm_get_car_rent_info($id);
                         $product = new WC_Product($id);
                         $price = $product->get_price();
                         $link = $reservation_page_url;
+                        $features = caag_hq_get_features_for_display_by_post_id($product->get_id());
+                        var_dump($features);
                         ?>
                         <div class="stm_product_grid_single">
                             <a href="<?php echo $link; ?>" class="inner">
@@ -92,25 +90,19 @@ class WPBakeryShortCode_hq_vehicles_classes_grid extends WPBakeryShortCode{
                                             <div class="price">
                                                 <mark><?php esc_html_e('From', 'motors'); ?></mark>
                                                 <?php if (! empty( $currency_tag ) ): ?>
-                                                    <?php echo '<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">'. $currency_tag .'</span>'. $price .'</span>/day'; ?>
+                                                    <?php echo '<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">'. $currency_tag .'</span>'. $price .'</span> /' . $day; ?>
                                                 <?php else: ?>
                                                     <?php echo sprintf( __('%s/day', 'motors'), wc_price($price) ); ?>
                                                 <?php endif; ?>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <?php if (!empty($car_info)): ?>
+                                    <?php if (!empty($features)): ?>
                                         <div class="stm_right">
-                                            <?php foreach ($car_info as $slug => $info):
-                                                $name = $info['value'];
-                                                if ($info['numeric']) {
-                                                    $name = $info['value'] . ' ' . esc_html__($info['name'], 'motors');
-                                                }
-                                                $font = $info['font'];
-                                                ?>
+                                            <?php foreach ($features as $feature): ?>
                                                 <div class="single_info stm_single_info_font_<?php echo esc_attr($font) ?>">
-                                                    <i class="<?php echo esc_attr($font); ?>"></i>
-                                                    <span><?php echo sanitize_text_field($name); ?></span>
+                                                    <i class=" fa <?php echo $feature->icon; ?>"></i>
+                                                    <span><?php echo $feature->label; ?></span>
                                                 </div>
                                             <?php endforeach; ?>
                                         </div>
