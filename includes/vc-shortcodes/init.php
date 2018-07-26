@@ -13,3 +13,4 @@ require_once('hq-contact-form.php');
 require_once('hq-google-map.php');
 require_once('hq-reservation-form.php');
 require_once('hq-vehicles-grid.php');
+require_once('hq-vehicles-grid-filter-brand.php');

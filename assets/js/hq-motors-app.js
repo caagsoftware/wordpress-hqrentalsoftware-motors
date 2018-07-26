@@ -3,13 +3,6 @@
 
     $(document).ready(function(){
 
-        /*Timepicker*/
-        var stmToday = new Date();
-        var stmTomorrow = new Date(+new Date() + 86400000);
-        var stmStartDate = false;
-        var stmEndDate = false;
-        var startDate = false;
-        var endDate = false;
         var dateTimeFormat = 'Y-m-d H:i';
         /*Datepicker Init*/
 

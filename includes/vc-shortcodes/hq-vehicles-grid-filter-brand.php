@@ -7,11 +7,11 @@
 
 vc_map(
     array(
-        'name'                    => __( 'HQ Vehicles Classes Grid', 'js_composer' ),
-        'base'                    => 'hq_vehicles_classes_grid',
+        'name'                    => __( 'HQ Vehicles Classes By Brands Grid', 'js_composer' ),
+        'base'                    => 'hq_vehicles_classes_grid_filter_by_brand',
         'content_element'         => true,
         'show_settings_on_create' => true,
-        'description'             => __( 'HQ Vehicles Classes Grid', 'js_composer'),
+        'description'             => __( 'HQ Vehicles Classes Filter By Brands Grid ', 'js_composer'),
         'icon'                    =>    HQ_MOTORS_VC_SHORTCODES_ICON,
         'params' => array(
             array(
@@ -38,18 +38,26 @@ vc_map(
                 'param_name'  => 'day',
                 'value'       => ''
             ),
+            array(
+                'type'          => 'textfield',
+                'heading'       => __( 'HQ Brand ID', 'js_composer' ),
+                'param_name'    => 'brand_id',
+                'value'         => '',
+                'description'   =>  'HQ Brand Identification Number'
+            ),
         )
     )
 );
 
-class WPBakeryShortCode_hq_vehicles_classes_grid extends WPBakeryShortCode{
+class WPBakeryShortCode_hq_vehicles_classes_grid_filter_by_brand extends WPBakeryShortCode{
     protected function content( $atts, $content = null ) {
 
         extract( shortcode_atts( array(
             'product_number'            => '6',
             'currency_tag'	            =>	'',
             'reservation_page_url'      =>  '',
-            'day'                       =>  ''
+            'day'                       =>  '',
+            'brand_id'                  =>  ''
         ), $atts ) );
 
         if (empty($product_number)) {
@@ -61,7 +69,14 @@ class WPBakeryShortCode_hq_vehicles_classes_grid extends WPBakeryShortCode{
             'post_status' => 'publish',
             'orderby'   => 'meta_value_num',
             'meta_key'  => '_price',
-            'order' => 'ASC'
+            'order' => 'ASC',
+            'meta_query'    =>  array(
+                    array(
+                        'key'       =>  CAAG_HQ_RENTAL_VEHICLE_CLASS_CAAG_BRAND_ID_ON_WOOCOMMERCE_PRODUCT_META,
+                        'value'     =>  $brand_id,
+                        'compare'   =>  '='
+                    )
+            )
         );
         $vehicles = new WP_Query($args);
         if ($vehicles->have_posts()): ?>
@@ -103,12 +118,12 @@ class WPBakeryShortCode_hq_vehicles_classes_grid extends WPBakeryShortCode{
                                             <?php foreach ($features as $feature): ?>
                                                 <div class="single_info">
                                                     <i class="<?php
-                                                        if((strpos($feature->icon, 'fas fa') !== false) or (strpos($feature->icon, 'fab fa') !== false)){
-                                                            echo $feature->icon;
-                                                        }else{
-                                                            echo 'fas fa-'. $feature->icon;
+                                                    if((strpos($feature->icon, 'fas fa') !== false) or (strpos($feature->icon, 'fab fa') !== false)){
+                                                        echo $feature->icon;
+                                                    }else{
+                                                        echo 'fas fa-'. $feature->icon;
 
-                                                        }?>
+                                                    }?>
                                                     "></i>
                                                     <span><?php echo $feature->label; ?></span>
                                                 </div>
