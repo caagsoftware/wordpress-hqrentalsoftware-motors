@@ -12,5 +12,6 @@ define('HQ_MOTORS_VC_SHORTCODES_ICON', 'https://caag.caagcrm.com/public-uploads/
 require_once('hq-contact-form.php');
 require_once('hq-google-map.php');
 require_once('hq-reservation-form.php');
+require_once('hq-reservation-brands-form.php');
 require_once('hq-vehicles-grid.php');
 require_once('hq-vehicles-grid-filter-brand.php');
