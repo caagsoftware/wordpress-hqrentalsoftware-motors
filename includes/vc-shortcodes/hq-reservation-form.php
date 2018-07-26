@@ -257,6 +257,7 @@ class WPBakeryShortCode_hq_reservation_form extends WPBakeryShortCode{
                                 <div class="stm_pickup_location">
                                     <i class="stm-service-icon-pin"></i>
                                     <select id="hq-pick-brand" name="pick_up_location" data-class="stm_rent_location" tabindex="-1" class="select2-hidden-accessible" aria-hidden="true">
+                                        <option><?php echo $pick_brand_placeholder; ?></option>
                                         <?php foreach ($brands_links as $brand): ?>
                                         <option value="<?php echo $brand['link']; ?>"><?php echo $brand['name']; ?></option>
                                         <?php endforeach; ?>
