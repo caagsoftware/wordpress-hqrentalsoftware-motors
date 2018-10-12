@@ -15,3 +15,4 @@ require_once('hq-reservation-form.php');
 require_once('hq-reservation-brands-form.php');
 require_once('hq-vehicles-grid.php');
 require_once('hq-vehicles-grid-filter-brand.php');
+require_once('hq-motors-reservation-form-brands.php');
