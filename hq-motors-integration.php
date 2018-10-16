@@ -3,7 +3,7 @@
 Plugin Name:  HQ Rental - Motors Theme Integration
 Plugin URI:   https://hqrentalsoftware.com
 Description:  HQ Rental Software Toolset
-Version:      0.1
+Version:      1.0.0
 Author:       Miguel Faggioni
 License:      GPL2
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
